@@ -1,0 +1,354 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "new-project",
+  "title": "New Project",
+  "description": "Create a new project and open it in your favourite editor",
+  "icon": "command-icon.png",
+  "author": "leondaz",
+  "categories": [
+    "Developer Tools"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "project-empty",
+      "title": "Create an Empty Project",
+      "description": "Create an Empty project",
+      "mode": "no-view",
+      
+      
+      "arguments": [
+        {
+          "name": "path",
+          "placeholder": "~/projects",
+          "type": "text",
+          "required": false
+        }
+      ],
+      "preferences": [
+        {
+          "name": "projectsLocation",
+          "title": "Projects location",
+          "default": "~/projects",
+          "required": true,
+          "description": "Location to save your newly created projects",
+          "type": "directory",
+          "placeholder": "~/projects"
+        }
+      ]
+    },
+    {
+      "name": "project-node",
+      "title": "Create Node Project",
+      "description": "Create a Node.js project",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "path",
+          "placeholder": "~/projects",
+          "type": "text",
+          "required": false
+        }
+      ],
+      "preferences": [
+        {
+          "name": "useTs",
+          "type": "checkbox",
+          "title": "Use Typescript",
+          "description": "Use Typescript instead of Javascript",
+          "default": true,
+          "required": true,
+          "label": "Use Typescript"
+        },
+        {
+          "name": "pkgManager",
+          "title": "Default package Manager",
+          "placeholder": "npm",
+          "description": "Package Manager",
+          "default": "npm",
+          "required": true,
+          "type": "dropdown",
+          "data": [
+            {
+              "title": "npm",
+              "value": "npm"
+            },
+            {
+              "title": "yarn",
+              "value": "yarn"
+            },
+            {
+              "title": "pnpm",
+              "value": "pnpm"
+            },
+            {
+              "title": "bun",
+              "value": "bun"
+            }
+          ]
+        },
+        {
+          "title": "Preferred Editor",
+          "name": "editor",
+          "type": "textfield",
+          "placeholder": "code",
+          "default": "code",
+          "description": "Your editor's CLI command, must be in path",
+          "required": true
+        },
+        {
+          "name": "projectsLocation",
+          "title": "Projects location",
+          "default": "~/projects",
+          "required": true,
+          "description": "Location to save your newly created projects",
+          "type": "directory",
+          "placeholder": "~/projects"
+        },
+        {
+          "name": "addEslint",
+          "label": "Adds Eslint",
+          "title": "Linting",
+          "description": "Add Eslint @recommended to the newly created project",
+          "default": true,
+          "required": true,
+          "type": "checkbox"
+        },
+        {
+          "name": "addPrettier",
+          "label": "Add prettier",
+          "title": "Formatting",
+          "description": "Add Prettier to the newly created project",
+          "default": true,
+          "required": true,
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "name": "project-react",
+      "title": "Create React Project in JS",
+      "description": "Create a project based on React & Javascript",
+      "mode": "no-view",
+      "keywords": [
+        "react",
+        "js",
+        "ts",
+        "javascript",
+        "typescript"
+      ],
+      "preferences": [
+        {
+          "name": "useTs",
+          "type": "checkbox",
+          "title": "Use Typescript",
+          "description": "Use Typescript instead of Javascript",
+          "default": true,
+          "required": true,
+          "label": "Use Typescript"
+        },
+        {
+          "name": "pkgManager",
+          "title": "Default package Manager",
+          "placeholder": "npm",
+          "description": "Package Manager",
+          "default": "npm",
+          "required": true,
+          "type": "dropdown",
+          "data": [
+            {
+              "title": "npm",
+              "value": "npm"
+            },
+            {
+              "title": "yarn",
+              "value": "yarn"
+            },
+            {
+              "title": "pnpm",
+              "value": "pnpm"
+            },
+            {
+              "title": "bun",
+              "value": "bun"
+            }
+          ]
+        },
+        {
+          "title": "Preferred Editor",
+          "name": "editor",
+          "type": "textfield",
+          "placeholder": "code",
+          "default": "code",
+          "description": "Your editor's CLI command, must be in path",
+          "required": true
+        },
+        {
+          "name": "projectsLocation",
+          "title": "Projects location",
+          "default": "~/projects",
+          "required": true,
+          "description": "Location to save your newly created projects",
+          "type": "directory",
+          "placeholder": "~/projects"
+        },
+        {
+          "name": "addEslint",
+          "label": "Adds Eslint",
+          "title": "Linting",
+          "description": "Add Eslint @recommended to the newly created project",
+          "default": true,
+          "required": true,
+          "type": "checkbox"
+        },
+        {
+          "name": "addPrettier",
+          "label": "Add prettier",
+          "title": "Formatting",
+          "description": "Add Prettier to the newly created project",
+          "default": true,
+          "required": true,
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "name": "project-next",
+      "title": "Create Next Project in JS",
+      "description": "Create a project based on Next & Javascript",
+      "mode": "no-view",
+      "keywords": [
+        "react",
+        "next",
+        "js",
+        "ts",
+        "javascript",
+        "typescript"
+      ]
+    },
+    {
+      "name": "project-vue",
+      "title": "Create Vue Project in JS",
+      "description": "Create a project based on Vue & Javascript",
+      "mode": "no-view",
+      "keywords": [
+        "vue",
+        "js",
+        "ts",
+        "javascript",
+        "typescript"
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "placeholder": "~/projects",
+          "type": "text",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "project-python",
+      "title": "Create Python Project",
+      "description": "Create a project based on Python",
+      "mode": "no-view",
+      "keywords": [
+        "python"
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "placeholder": "~/projects",
+          "type": "text",
+          "required": false
+        }
+      ],
+      "preferences": [
+        {
+          "name": "usePoetry",
+          "label": "Use Poetry",
+          "title": "Poetry",
+          "description": "Use Poetry instead of Pip",
+          "type": "checkbox",
+          "default": true,
+          "required": true
+        },
+        {
+          "name": "formatter",
+          "title": "Formatter",
+          "description": "Formatter",
+          "default": "ruff",
+          "required": true,
+          "type": "dropdown",
+          "data": [
+            {
+              "title": "ruff",
+              "value": "ruff"
+            },
+            {
+              "title": "black",
+              "value": "black"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "project-django",
+      "title": "Create Django Project",
+      "description": "Create a project based on Django",
+      "mode": "no-view",
+      "keywords": [
+        "django",
+        "python"
+      ],
+      "arguments": [
+        {
+          "name": "path",
+          "placeholder": "~/projects",
+          "type": "text",
+          "required": false
+        }
+      ],
+      "preferences": [
+        {
+          "name": "createDrfTemplate",
+          "label": "Create a DRF template",
+          "title": "DRF",
+          "description": "Add Django Rest Framework to the newly created project",
+          "default": true,
+          "required": true,
+          "type": "checkbox"
+        },
+        {
+          "name": "graphQLbasedTemplate",
+          "label": "Create a GraphQL template",
+          "title": "GraphQL",
+          "description": "Add GraphQL to the newly created project",
+          "default": true,
+          "required": true,
+          "type": "checkbox"
+        }
+      ]
+    }
+  ],
+  "preferences": [],
+  "dependencies": {
+    "@raycast/api": "^1.67.1"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^1.0.6",
+    "@types/node": "20.8.10",
+    "@types/react": "18.2.27",
+    "eslint": "^8.51.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
