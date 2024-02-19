@@ -1,7 +1,7 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "new-project",
-  "title": "New Project",
+  "name": "momentum",
+  "title": "Momentum",
   "description": "Create a new project and open it in your favourite editor",
   "icon": "command-icon.png",
   "author": "leondaz",
