@@ -15,17 +15,51 @@
       "title": "Create an Empty Project",
       "description": "Create an Empty project",
       "mode": "no-view",
-      
-      
       "arguments": [
         {
-          "name": "path",
-          "placeholder": "~/projects",
+          "name": "projectName",
+          "placeholder": "my_new_project",
           "type": "text",
-          "required": false
+          "required": true
         }
       ],
       "preferences": [
+        {
+          "name": "pkgManager",
+          "title": "Default package Manager",
+          "placeholder": "npm",
+          "description": "Package Manager",
+          "default": "npm",
+          "required": true,
+          "type": "dropdown",
+          "data": [
+            {
+              "title": "npm",
+              "value": "npm"
+            },
+            {
+              "title": "yarn",
+              "value": "yarn"
+            },
+            {
+              "title": "pnpm",
+              "value": "pnpm"
+            },
+            {
+              "title": "bun",
+              "value": "bun"
+            }
+          ]
+        },
+        {
+          "title": "Preferred IDE",
+          "name": "editor",
+          "type": "appPicker",
+          "placeholder": "code",
+          "default": "Visual Studio Code",
+          "description": "Choose your favourite IDE",
+          "required": true
+        },
         {
           "name": "projectsLocation",
           "title": "Projects location",
@@ -44,22 +78,13 @@
       "mode": "no-view",
       "arguments": [
         {
-          "name": "path",
-          "placeholder": "~/projects",
+          "name": "projectName",
+          "placeholder": "my_new_project",
           "type": "text",
-          "required": false
+          "required": true
         }
       ],
       "preferences": [
-        {
-          "name": "useTs",
-          "type": "checkbox",
-          "title": "Use Typescript",
-          "description": "Use Typescript instead of Javascript",
-          "default": true,
-          "required": true,
-          "label": "Use Typescript"
-        },
         {
           "name": "pkgManager",
           "title": "Default package Manager",
@@ -88,12 +113,12 @@
           ]
         },
         {
-          "title": "Preferred Editor",
+          "title": "Preferred IDE",
           "name": "editor",
-          "type": "textfield",
+          "type": "appPicker",
           "placeholder": "code",
-          "default": "code",
-          "description": "Your editor's CLI command, must be in path",
+          "default": "Visual Studio Code",
+          "description": "Choose your favourite IDE",
           "required": true
         },
         {
@@ -106,7 +131,7 @@
           "placeholder": "~/projects"
         },
         {
-          "name": "addEslint",
+          "name": "eslint",
           "label": "Adds Eslint",
           "title": "Linting",
           "description": "Add Eslint @recommended to the newly created project",
@@ -115,13 +140,13 @@
           "type": "checkbox"
         },
         {
-          "name": "addPrettier",
-          "label": "Add prettier",
-          "title": "Formatting",
-          "description": "Add Prettier to the newly created project",
+          "name": "typescript",
+          "type": "checkbox",
+          "title": "Use Typescript",
+          "description": "Use Typescript instead of Javascript",
           "default": true,
           "required": true,
-          "type": "checkbox"
+          "label": "Use Typescript"
         }
       ]
     },
@@ -137,9 +162,17 @@
         "javascript",
         "typescript"
       ],
+      "arguments": [
+        {
+          "name": "projectName",
+          "placeholder": "my_new_project",
+          "type": "text",
+          "required": true
+        }
+      ],
       "preferences": [
         {
-          "name": "useTs",
+          "name": "typescript",
           "type": "checkbox",
           "title": "Use Typescript",
           "description": "Use Typescript instead of Javascript",
@@ -175,12 +208,12 @@
           ]
         },
         {
-          "title": "Preferred Editor",
+          "title": "Preferred IDE",
           "name": "editor",
-          "type": "textfield",
+          "type": "appPicker",
           "placeholder": "code",
-          "default": "code",
-          "description": "Your editor's CLI command, must be in path",
+          "default": "Visual Studio Code",
+          "description": "Choose your favourite IDE",
           "required": true
         },
         {
@@ -193,19 +226,10 @@
           "placeholder": "~/projects"
         },
         {
-          "name": "addEslint",
+          "name": "eslint",
           "label": "Adds Eslint",
           "title": "Linting",
           "description": "Add Eslint @recommended to the newly created project",
-          "default": true,
-          "required": true,
-          "type": "checkbox"
-        },
-        {
-          "name": "addPrettier",
-          "label": "Add prettier",
-          "title": "Formatting",
-          "description": "Add Prettier to the newly created project",
           "default": true,
           "required": true,
           "type": "checkbox"
@@ -240,10 +264,10 @@
       ],
       "arguments": [
         {
-          "name": "path",
-          "placeholder": "~/projects",
+          "name": "projectName",
+          "placeholder": "my_new_project",
           "type": "text",
-          "required": false
+          "required": true
         }
       ]
     },
@@ -257,15 +281,15 @@
       ],
       "arguments": [
         {
-          "name": "path",
-          "placeholder": "~/projects",
+          "name": "projectName",
+          "placeholder": "my_new_project",
           "type": "text",
-          "required": false
+          "required": true
         }
       ],
       "preferences": [
         {
-          "name": "usePoetry",
+          "name": "poetry",
           "label": "Use Poetry",
           "title": "Poetry",
           "description": "Use Poetry instead of Pip",
@@ -304,10 +328,10 @@
       ],
       "arguments": [
         {
-          "name": "path",
-          "placeholder": "~/projects",
+          "name": "projectName",
+          "placeholder": "my_new_project",
           "type": "text",
-          "required": false
+          "required": true
         }
       ],
       "preferences": [
@@ -332,14 +356,28 @@
       ]
     }
   ],
-  "preferences": [],
+  "preferences": [
+    {
+      "name": "showEditorFirst",
+      "title": "Show editor before setup is finished",
+      "label": "Show editor first",
+      "description": "Opens the editor set for the command before the command finishes running",
+      "required": false,
+      "default": true,
+      "type": "checkbox"
+    }
+  ],
   "dependencies": {
-    "@raycast/api": "^1.67.1"
+    "@raycast/api": "^1.67.1",
+    "handlebars": "^4.7.8",
+    "zx": "^7.2.3"
   },
   "devDependencies": {
     "@raycast/eslint-config": "^1.0.6",
+    "@types/eslint": "^8.56.2",
     "@types/node": "20.8.10",
     "@types/react": "18.2.27",
+    "@types/handlebars": "^4.1.0",
     "eslint": "^8.51.0",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
@@ -347,6 +385,7 @@
   "scripts": {
     "build": "ray build -e dist",
     "dev": "ray develop",
+    "generate-templates": "node ./scripts/generateTypes.js",
     "fix-lint": "ray lint --fix",
     "lint": "ray lint",
     "publish": "npx @raycast/api@latest publish"

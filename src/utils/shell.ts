@@ -1,41 +1,42 @@
-import { spawnSync } from "node:child_process";
+#!/usr/bin.env zx
 
-const run = <T extends object | string>(fullCommand: string, parseOutput?: (op: string) => T): T => {
-  const [command, ...args] = fullCommand.split(" ");
-  const { stdout, stderr } = spawnSync(command, args, {
-    shell: "/bin/zsh",
-  });
+import { $ } from 'zx';
 
-  if (stderr.length > 0) {
-    const error = stderr.toString();
-    console.error(error);
-    throw new Error(stderr.toString());
+
+/**
+ * Basic shell implementation that supports the commands needed for the extension
+ * There's a better way to write this, but not today
+ * */
+
+
+const sourceRoots = ['~/.profile', '~/.bashrc', '~/.zprofile', '~/.zshrc'].map(s => `source ${s}`);
+
+$.shell = '/bin/bash';
+$.prefix = sourceRoots.join(';') + ';';
+
+$.env = {
+  PATH: `/usr/bin:/opt/homebrew/bin:/usr/bin/local;${process.env.PATH}`,
+};
+
+// bug with zx + zsh, had to fix it manually
+$.quote = function quote(arg: string) {
+  if (/^[a-z0-9/_.\-@:=]+$/i.test(arg) || arg === '') {
+    return arg;
   }
 
-  const output = stdout.toString().trim();
-
-  if (parseOutput) {
-    return parseOutput(output);
-  }
-
-  return output as T;
+  return (
+    `$'` +
+    arg
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, '\\\'')
+      .replace(/\f/g, '\\f')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+      .replace(/\t/g, '\\t')
+      .replace(/\v/g, '\\v')
+      .replace(/\0/g, '\\0') +
+    `'`
+  );
 };
 
-const source = (path: string) => {
-  return run(`source ${path}`);
-};
-
-const which = (command: string) => {
-  return run(`which ${command}`);
-};
-
-const commandExists = (command: string) => {
-  return !!which(command);
-};
-
-export default {
-  which,
-  commandExists,
-  source,
-  run,
-};
+export { $ };
