@@ -1,16 +1,20 @@
-import { $ } from './shell';
 import path from 'node:path';
-import { makeDirIfNotExists } from './ensureExistingDir';
-import { PackageManager, PackageManagerName } from '../typing/packageMangers';
+import { makeDirIfNotExists } from './makeDirIfNotExists';
+import {
+  NodePackageManager,
+  NodePackageManagerSpecs,
+  PackageManager,
+  PackageManagerName,
+} from '../typing/packageMangers';
 import { getManagerByName } from './packageManagers';
-import { openEditor } from './openInEditor';
 import { ValidationError } from './errors';
-import { open } from '@raycast/api';
+import { getPreferenceValues, open } from '@raycast/api';
 
-export interface ValidPrefsResult {
-  manager: PackageManager;
+export interface ValidPrefsResult<T, PM extends PackageManager> {
+  manager: PM;
   projectRoot: string;
   openEditor: () => Promise<void>;
+  data: T;
 }
 
 export const validateProjectRoot = async (root: string, projectDir: string) => {
@@ -25,6 +29,11 @@ export const validateProjectRoot = async (root: string, projectDir: string) => {
 
 export const validateManager = async (pkgManager: PackageManagerName) => {
   const manager = getManagerByName(pkgManager);
+  
+  if (!manager) {
+    throw new ValidationError(`${pkgManager} is not supported`);
+  }
+
   const packageManagerIsInstalled = await manager.isInstalled();
 
   if (!packageManagerIsInstalled) {
@@ -35,9 +44,15 @@ export const validateManager = async (pkgManager: PackageManagerName) => {
 };
 
 
-export const validatePrefs = async (prefs: Preferences.ProjectEmpty, args: Arguments.ProjectNode): Promise<ValidPrefsResult> => {
+export const validatePrefs = async <
+  T extends Preferences.ProjectEmpty,
+  PM extends PackageManager
+>(args: Arguments.ProjectEmpty): Promise<ValidPrefsResult<T, PM>> => {
+  const prefs = getPreferenceValues<T>();
+
   const projectRoot = await validateProjectRoot(prefs.projectsLocation, args.projectName);
   const manager = await validateManager(prefs.pkgManager);
+
   const editor = async () => {
     await open(projectRoot, prefs.editor);
   };
@@ -46,5 +61,6 @@ export const validatePrefs = async (prefs: Preferences.ProjectEmpty, args: Argum
     manager,
     projectRoot,
     openEditor: editor,
+    data: prefs,
   };
 };

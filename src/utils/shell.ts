@@ -1,6 +1,7 @@
 #!/usr/bin.env zx
 
-import { $ } from 'zx';
+import { $, LogEntry } from 'zx';
+import { isDev } from './isDev';
 
 
 /**
@@ -39,4 +40,17 @@ $.quote = function quote(arg: string) {
   );
 };
 
-export { $ };
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+
+if (isDev()) {
+  console.log('running development mode');
+
+  $.log = (entry: LogEntry) => {
+    if (entry.kind === 'cmd') {
+      console.info(entry.cmd);
+    }
+  };
+}
+export {
+  $,
+};

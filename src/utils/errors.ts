@@ -8,3 +8,8 @@ export class ValidationError extends Error {
 export const isValidationError = (error: unknown): error is ValidationError => {
   return error instanceof ValidationError;
 };
+
+export enum Errors {
+  EEXIST = 'EEXIST',
+  EACCES = 'EACCES',
+}

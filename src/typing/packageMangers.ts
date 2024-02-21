@@ -16,6 +16,7 @@ export interface ProjectInitOpts {
 }
 
 export interface NodeProjectCreateOpts {
+  using: string;
   projectName: string
   root: string
   template: string;
@@ -41,6 +42,10 @@ export interface PackageManagerSpecs {
 
   globalFlag?: string;
   devFlag?: string; 
+}
+
+export interface NodePackageManagerSpecs  extends PackageManagerSpecs{
+  createCommand?: 'create'
 }
 
 export type PackageManagerName =  NodePackageManagerName | GoPackageManager | PythonPackageManager;

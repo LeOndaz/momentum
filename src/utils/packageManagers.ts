@@ -1,7 +1,7 @@
 #!/usr/bin.env zx
 import {
   NodePackageManager,
-  NodePackageManagerName,
+  NodePackageManagerName, NodePackageManagerSpecs,
   NodeProjectCreateOpts,
   PackageManager,
   PackageManagerName,
@@ -28,16 +28,16 @@ const packageManager = <InstallOpts extends ProjectInstallOpts, InitOpts extends
       specs.installCommand || defaultSpecs.installCommand,
       packageName,
     ];
-  
+
     // some combinations make no sense
     if (global && root) {
       throw new Error(`can't pass a directory for a global install`);
     }
-    
+
     if (global && !specs.globalFlag) {
       throw new Error(`${name} does not support global installations`);
     }
-    
+
     if (global && dev) {
       throw new Error(`can't install dev packages globally`);
     }
@@ -69,7 +69,7 @@ const packageManager = <InstallOpts extends ProjectInstallOpts, InitOpts extends
 
 
     try {
-      await $`cd ${root} && ${name} ${specs.initCommand} -y`;
+      await $`cd ${root} && ${name} ${specs.initCommand || defaultSpecs.initCommand} -y`;
     } catch (e) {
       console.error(e);
       throw new Error(`${name} ${specs.initCommand} has failed`);
@@ -94,25 +94,27 @@ const packageManager = <InstallOpts extends ProjectInstallOpts, InitOpts extends
   };
 };
 
-const defaultNodeSpecs = {
+const defaultNodeSpecs: NodePackageManagerSpecs = {
   ...defaultSpecs,
   createCommand: 'create',
 };
 
-const nodePackageManager = (name: NodePackageManagerName, specs: PackageManagerSpecs & {
-  createCommand?: string
-} = defaultNodeSpecs): NodePackageManager => {
+const nodePackageManager = (name: NodePackageManagerName, specs: NodePackageManagerSpecs = defaultNodeSpecs): NodePackageManager => {
+  
   const manager = packageManager(name, specs);
 
   const create = async ({
                           projectName,
                           root,
+                          using,
                           template,
                         }: NodeProjectCreateOpts) => {
     const command = [
       name,
-      specs.createCommand,
+      specs.createCommand || defaultNodeSpecs.createCommand,
+      using,
       projectName,
+      '--template',
       template,
     ];
 
@@ -138,12 +140,12 @@ export const bun = () => {
 };
 
 export const pnpm = () => {
-  return packageManager('pnpm', {
+  return nodePackageManager('pnpm', {
     installCommand: 'add',
   });
 };
 export const yarn = () => {
-  return packageManager('yarn', {
+  return nodePackageManager('yarn', {
     installCommand: 'add',
   });
 };
@@ -181,6 +183,6 @@ export const getManagerByName = (name: PackageManagerName) => {
     case 'poetry':
       return poetry();
     default:
-      return npm();
+      return null;
   }
 };

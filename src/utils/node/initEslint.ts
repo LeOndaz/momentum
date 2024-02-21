@@ -1,6 +1,6 @@
 import { InitEslint } from '../../typing/initProjectArgs';
-import { showLoading } from '../../utils/toasts';
-import { EslintTemplateData, generateEslintTemplate } from '../../utils/generateTemplate';
+import { showLoading } from '../toasts';
+import { EslintTemplateData, generateEslintTemplate } from '../generateTemplate';
 
 export const initEslint = async ({ manager, typescript, preset, root }: InitEslint) => {
   await manager.install({ packageName: 'eslint', dev: true, root });

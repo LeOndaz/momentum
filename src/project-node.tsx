@@ -1,52 +1,32 @@
-import type { LaunchProps } from '@raycast/api';
-import { getPreferenceValues } from '@raycast/api';
-import { validatePrefs, ValidPrefsResult } from './utils/validation';
-import { node } from './apis/node';
-import { showError } from './utils/toasts';
-import { isValidationError } from './utils/errors';
+import { NodeProjectCommand } from './utils/projectCommand';
+import { initEslint } from './utils/node/initEslint';
 
-interface CommandProps extends LaunchProps {
-  arguments: Arguments.ProjectNode;
-}
 
-export default async function Command(props: CommandProps) {
-  const preferences = getPreferenceValues<Preferences.ProjectNode>();
-  let data: ValidPrefsResult;
+export default NodeProjectCommand<
+  Preferences.ProjectNode,
+  Arguments.ProjectNode
+>(async (opts) => {
+  const { manager, projectRoot, preferences } = opts;
+  const { typescript, eslint } = preferences;
 
-  try {
-    data = await validatePrefs(preferences, props.arguments);
-  } catch (err) {
-    if (isValidationError(err)) {
-      await showError(err.message);
-    }
+  await manager.init({
+    root: projectRoot,
+  });
 
-    console.error(err);
-    return;
-  }
-
-  const { manager, projectRoot, openEditor } = data;
-
-  if (preferences.showEditorFirst) {
-    await openEditor();
-  }
-
-  try {
-    await node.init({
-      manager,
-      typescript: preferences.typescript,
-      eslint: preferences.eslint,
-      projectRoot,
+  if (typescript) {
+    await manager.install({
+      packageName: 'typescript',
+      root: projectRoot,
+      dev: true,
     });
-  } catch (e) {
-    console.error(e);
-    await showError('failed to init project');
-    return;
   }
 
-  try {
-    await openEditor();
-  } catch (e) {
-    console.error(e);
-    await showError('project was created but failed to open editor');
+  if (eslint) {
+    await initEslint({
+      manager,
+      preset: 'author-recommended',
+      root: projectRoot,
+      typescript,
+    });
   }
-}
+});

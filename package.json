@@ -233,6 +233,24 @@
           "default": true,
           "required": true,
           "type": "checkbox"
+        },
+        {
+          "name": "bundler",
+          "type": "dropdown",
+          "title": "Bundler",
+          "description": "The bundler to use, if you specified no bundler, no bundler will be installed",
+          "default": "vite",
+          "required": false,
+          "data": [
+            {
+              "title": "Vite",
+              "value": "vite"
+            },
+            {
+              "title": "Webpack",
+              "value": "Webpack"
+            }
+          ]
         }
       ]
     },
@@ -365,6 +383,15 @@
       "required": false,
       "default": true,
       "type": "checkbox"
+    },
+    {
+      "name": "overwriteIfExists",
+      "title": "Dangerously overwrite projects",
+      "label": "Dangerously overwrite",
+      "description": "DANGER: Overwrites the project in case it exists",
+      "type": "checkbox",
+      "required": false,
+      "default": false
     }
   ],
   "dependencies": {
