@@ -1,4 +1,4 @@
-import { environment } from '@raycast/api';
+import { environment } from "@raycast/api";
 // const jetbraindsSpecficiDirectories = [
 //   'PycharmProjects',
 //   'WebstormProjects',
@@ -6,6 +6,6 @@ import { environment } from '@raycast/api';
 //   'GolangProjects',
 //   'IdeaProjects',
 // ];
-import path from 'path';
+import path from "path";
 
-export const templatesRoot = path.join(environment.assetsPath, 'templates');
+export const templatesRoot = path.join(environment.assetsPath, "templates");

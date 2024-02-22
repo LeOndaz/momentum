@@ -1,20 +1,13 @@
-import { NodePackageManager, PackageManager } from './packageMangers';
+import { NodePackageManager, PackageManager } from "./packageMangers";
 
-type EslintPreset = 'eslint' | 'author-recommended';
+type EslintPreset = "eslint" | "author-recommended";
 
-
-export interface BasePerformOpts {
-  manager: PackageManager;
+export interface BasePerformOpts<T extends PackageManager> {
+  manager: T;
   projectRoot: string;
 }
 
-export interface BaseNodePerformOpts extends BasePerformOpts {
-  manager: NodePackageManager;
-}
-
-
-
-export type InitNodeOpts = Preferences.ProjectNode & BaseNodePerformOpts;
+export type BaseNodePerformOpts = BasePerformOpts<NodePackageManager>;
 
 export interface InitEslint {
   manager: PackageManager;

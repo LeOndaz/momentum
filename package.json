@@ -151,6 +151,147 @@
       ]
     },
     {
+      "name": "project-vite",
+      "title": "Create Vite Project",
+      "description": "Create a Vite project",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "projectName",
+          "placeholder": "my_new_project",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "template",
+          "placeholder": "Choose a vite template",
+          "type": "dropdown",
+          "required": true,
+          "data": [
+            {
+              "title": "Vanilla (Javascript)",
+              "value": "vanilla"
+            },
+            {
+              "title": "Vanila (Typescript)",
+              "value": "vanilla-ts"
+            },
+            {
+              "title": "React (Javascript)",
+              "value": "react"
+            },
+            {
+              "title": "React (Typescript)",
+              "value": "react-ts"
+            },
+            {
+              "title": "React SWC (Javascript)",
+              "value": "react-swc"
+            },
+            {
+              "title": "React SWC (Typescript)",
+              "value": "react-swc-ts"
+            },
+            {
+              "title": "Vue (Javascript)",
+              "value": "vue"
+            },
+            {
+              "title": "Vue (Typescript)",
+              "value": "vue-ts"
+            },
+            {
+              "title": "Svelte (Javascript)",
+              "value": "svelte"
+            },
+            {
+              "title": "Svelte (Typescipt)",
+              "value": "svelte-ts"
+            },
+            {
+              "title": "Lit (Javascript)",
+              "value": "lit"
+            },
+            {
+              "title": "Lit (Typescript)",
+              "value": "lit-ts"
+            },
+            {
+              "title": "Preact (Typescript)",
+              "value": "preact-ts"
+            },
+            {
+              "title": "Solid (Javascript)",
+              "value": "solid"
+            },
+            {
+              "title": "Solid (Typescript)",
+              "value": "solid-ts"
+            },
+            {
+              "title": "Qwik (Javascript)",
+              "value": "qwik"
+            },
+            {
+              "title": "Qwik (Typescript)",
+              "value": "qwik-ts"
+            },
+            {
+              "title": "Last used",
+              "value": "last-used"
+            }
+          ]
+        }
+      ],
+      "preferences": [
+        {
+          "name": "pkgManager",
+          "title": "Default package Manager",
+          "placeholder": "npm",
+          "description": "Package Manager",
+          "default": "npm",
+          "required": true,
+          "type": "dropdown",
+          "data": [
+            {
+              "title": "npm",
+              "value": "npm"
+            },
+            {
+              "title": "yarn",
+              "value": "yarn"
+            },
+            {
+              "title": "pnpm",
+              "value": "pnpm"
+            },
+            {
+              "title": "bun",
+              "value": "bun"
+            }
+          ]
+        },
+        {
+          "title": "Preferred IDE",
+          "name": "editor",
+          "type": "appPicker",
+          "placeholder": "code",
+          "default": "Visual Studio Code",
+          "description": "Choose your favourite IDE",
+          "required": true
+        },
+        {
+          "name": "projectsLocation",
+          "title": "Projects location",
+          "default": "~/projects",
+          "required": true,
+          "description": "Location to save your newly created projects",
+          "type": "directory",
+          "placeholder": "~/projects"
+        }
+      ]
+    },
+    {
       "name": "project-react",
       "title": "Create React Project in JS",
       "description": "Create a project based on React & Javascript",
@@ -255,20 +396,6 @@
       ]
     },
     {
-      "name": "project-next",
-      "title": "Create Next Project in JS",
-      "description": "Create a project based on Next & Javascript",
-      "mode": "no-view",
-      "keywords": [
-        "react",
-        "next",
-        "js",
-        "ts",
-        "javascript",
-        "typescript"
-      ]
-    },
-    {
       "name": "project-vue",
       "title": "Create Vue Project in JS",
       "description": "Create a project based on Vue & Javascript",
@@ -286,90 +413,6 @@
           "placeholder": "my_new_project",
           "type": "text",
           "required": true
-        }
-      ]
-    },
-    {
-      "name": "project-python",
-      "title": "Create Python Project",
-      "description": "Create a project based on Python",
-      "mode": "no-view",
-      "keywords": [
-        "python"
-      ],
-      "arguments": [
-        {
-          "name": "projectName",
-          "placeholder": "my_new_project",
-          "type": "text",
-          "required": true
-        }
-      ],
-      "preferences": [
-        {
-          "name": "poetry",
-          "label": "Use Poetry",
-          "title": "Poetry",
-          "description": "Use Poetry instead of Pip",
-          "type": "checkbox",
-          "default": true,
-          "required": true
-        },
-        {
-          "name": "formatter",
-          "title": "Formatter",
-          "description": "Formatter",
-          "default": "ruff",
-          "required": true,
-          "type": "dropdown",
-          "data": [
-            {
-              "title": "ruff",
-              "value": "ruff"
-            },
-            {
-              "title": "black",
-              "value": "black"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "project-django",
-      "title": "Create Django Project",
-      "description": "Create a project based on Django",
-      "mode": "no-view",
-      "keywords": [
-        "django",
-        "python"
-      ],
-      "arguments": [
-        {
-          "name": "projectName",
-          "placeholder": "my_new_project",
-          "type": "text",
-          "required": true
-        }
-      ],
-      "preferences": [
-        {
-          "name": "createDrfTemplate",
-          "label": "Create a DRF template",
-          "title": "DRF",
-          "description": "Add Django Rest Framework to the newly created project",
-          "default": true,
-          "required": true,
-          "type": "checkbox"
-        },
-        {
-          "name": "graphQLbasedTemplate",
-          "label": "Create a GraphQL template",
-          "title": "GraphQL",
-          "description": "Add GraphQL to the newly created project",
-          "default": true,
-          "required": true,
-          "type": "checkbox"
         }
       ]
     }
@@ -402,10 +445,11 @@
   "devDependencies": {
     "@raycast/eslint-config": "^1.0.6",
     "@types/eslint": "^8.56.2",
+    "@types/handlebars": "^4.1.0",
     "@types/node": "20.8.10",
     "@types/react": "18.2.27",
-    "@types/handlebars": "^4.1.0",
     "eslint": "^8.51.0",
+    "husky": "^9.0.11",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
@@ -415,6 +459,7 @@
     "generate-templates": "node ./scripts/generateTypes.js",
     "fix-lint": "ray lint --fix",
     "lint": "ray lint",
-    "publish": "npx @raycast/api@latest publish"
+    "publish": "npx @raycast/api@latest publish",
+    "prepare": "husky"
   }
 }

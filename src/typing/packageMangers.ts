@@ -1,8 +1,9 @@
-import { Shell } from 'zx';
+import { Shell } from "zx";
 
-export type NodePackageManagerName = 'npm' | 'yarn' | 'bun' | 'pnpm';
-export type PythonPackageManager = 'poetry' | 'pip';
-export type GoPackageManager = 'go';
+export type NodePackageManagerName = "npm" | "yarn" | "bun" | "pnpm";
+export type PythonPackageManager = "poetry" | "pip" | "pip3";
+export type GoPackageManager = "go";
+export type PackageManagerName = NodePackageManagerName | GoPackageManager | PythonPackageManager;
 
 export interface ProjectInstallOpts {
   root: string;
@@ -17,17 +18,24 @@ export interface ProjectInitOpts {
 
 export interface NodeProjectCreateOpts {
   using: string;
-  projectName: string
-  root: string
+  projectName: string;
+  root: string;
   template: string;
 }
 
-export interface PackageManager<InstallOpts extends ProjectInstallOpts = ProjectInstallOpts, InitOpts extends ProjectInitOpts = ProjectInitOpts> {
-  name: string;
+export interface CheckPageOpts {
+  pkgName: string;
+  global?: boolean;
+  root?: string;
+}
 
-  install: (opts: InstallOpts) => Promise<void>;
-  init: (opts: InitOpts) => Promise<void>;
+export interface PackageManager {
+  name: PackageManagerName;
+
+  install: (opts: ProjectInstallOpts) => Promise<void>;
+  init: (opts: ProjectInitOpts) => Promise<void>;
   isInstalled: () => Promise<boolean>;
+  checkPackage: (opts: CheckPageOpts) => Promise<boolean>;
   underlyingShell?: Shell;
 }
 
@@ -37,15 +45,13 @@ export interface NodePackageManager extends PackageManager {
 }
 
 export interface PackageManagerSpecs {
-  installCommand?: 'install' | 'add';
-  initCommand?: 'init'; // FIXME: if this comment stays, most likely no package manager had anything other than init
+  installCommand?: "install" | "add";
+  initCommand?: "init"; // FIXME: if this comment stays, most likely no package manager had anything other than init
 
   globalFlag?: string;
-  devFlag?: string; 
+  devFlag?: string;
 }
 
-export interface NodePackageManagerSpecs  extends PackageManagerSpecs{
-  createCommand?: 'create'
+export interface NodePackageManagerSpecs extends PackageManagerSpecs {
+  createCommand?: "create";
 }
-
-export type PackageManagerName =  NodePackageManagerName | GoPackageManager | PythonPackageManager;

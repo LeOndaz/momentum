@@ -1,16 +1,12 @@
-import path from 'node:path';
-import { makeDirIfNotExists } from './makeDirIfNotExists';
-import {
-  NodePackageManager,
-  NodePackageManagerSpecs,
-  PackageManager,
-  PackageManagerName,
-} from '../typing/packageMangers';
-import { getManagerByName } from './packageManagers';
-import { ValidationError } from './errors';
-import { getPreferenceValues, open } from '@raycast/api';
+import path from "node:path";
+import { makeDirIfNotExists } from "./makeDirIfNotExists";
+import { PackageManager, PackageManagerName } from "../typing/packageMangers";
+import { getManagerByName } from "./packageManagers";
+import { ValidationError } from "./errors";
+import { getPreferenceValues, open } from "@raycast/api";
+import { Project } from "../typing/project";
 
-export interface ValidPrefsResult<T, PM extends PackageManager> {
+export interface ValidPrefsResult<T, PM> {
   manager: PM;
   projectRoot: string;
   openEditor: () => Promise<void>;
@@ -26,10 +22,9 @@ export const validateProjectRoot = async (root: string, projectDir: string) => {
   return projectRoot;
 };
 
+export const validateManager = async <PM extends PackageManager>(pkgManager: PackageManagerName): Promise<PM> => {
+  const manager = getManagerByName(pkgManager) as PM | null;
 
-export const validateManager = async (pkgManager: PackageManagerName) => {
-  const manager = getManagerByName(pkgManager);
-  
   if (!manager) {
     throw new ValidationError(`${pkgManager} is not supported`);
   }
@@ -43,15 +38,13 @@ export const validateManager = async (pkgManager: PackageManagerName) => {
   return manager;
 };
 
-
-export const validatePrefs = async <
-  T extends Preferences.ProjectEmpty,
-  PM extends PackageManager
->(args: Arguments.ProjectEmpty): Promise<ValidPrefsResult<T, PM>> => {
+export const validatePrefs = async <T extends Project, PM extends PackageManager>(
+  args: Arguments.ProjectEmpty,
+): Promise<ValidPrefsResult<T, PM>> => {
   const prefs = getPreferenceValues<T>();
 
   const projectRoot = await validateProjectRoot(prefs.projectsLocation, args.projectName);
-  const manager = await validateManager(prefs.pkgManager);
+  const manager: PM = await validateManager(prefs.pkgManager);
 
   const editor = async () => {
     await open(projectRoot, prefs.editor);

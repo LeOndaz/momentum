@@ -1,41 +1,40 @@
-import { getPreferenceValues, type LaunchProps } from '@raycast/api';
-import { validatePrefs, ValidPrefsResult } from './validation';
-import { isValidationError } from './errors';
-import { showError } from './toasts';
-import { Arguments } from '../typing/misc';
-import { NodePackageManager, PackageManager } from '../typing/packageMangers';
+import { getPreferenceValues, type LaunchProps } from "@raycast/api";
+import { validatePrefs, ValidPrefsResult } from "./validation";
+import { isValidationError } from "./errors";
+import { showError } from "./toasts";
+import { Arguments } from "../typing/misc";
+import { NodePackageManager, PackageManager } from "../typing/packageMangers";
+import { Project } from "../typing/project";
 
-export interface PerformOpts<Prefs extends Preferences.ProjectEmpty, Args extends Arguments.ProjectEmpty, PM extends PackageManager> {
+export interface PerformOpts<Prefs extends Project, Args extends Arguments.ProjectEmpty, PM extends PackageManager> {
   projectRoot: string;
-  manager: PM & PackageManager,
-  preferences: Prefs,
-  args: Args
+  manager: PM;
+  preferences: Prefs;
+  args: Args;
 }
 
 export type PerformFunc<
-  Prefs extends Preferences.ProjectEmpty,
+  Prefs extends Project,
   Args extends Arguments.ProjectEmpty,
-  PM extends PackageManager
+  PM extends PackageManager = PackageManager,
 > = (opts: PerformOpts<Prefs, Args, PM>) => Promise<void>;
 
-export type NodePerformFunc<
-  Prefs extends Preferences.ProjectEmpty,
-  Args extends Arguments.ProjectEmpty,
-> = PerformFunc<Prefs, Args, NodePackageManager>;
+export type NodePerformFunc<Prefs extends Preferences.ProjectEmpty, Args extends Arguments.ProjectEmpty> = PerformFunc<
+  Prefs,
+  Args,
+  NodePackageManager
+>;
 
 // not sure why Pascal, I felt it's more intuitive for a noun+function to be named in Pascal
-export const ProjectCommand = <
-  Prefs extends Preferences.ProjectEmpty,
-  Args extends Arguments,
-  PM extends PackageManager,
->(perform: PerformFunc<Prefs, Args, PM>) => {
+export const ProjectCommand = <Prefs extends Project, Args extends Arguments, PM extends PackageManager>(
+  perform: PerformFunc<Prefs, Args, PM>,
+) => {
   return async (launchProps: LaunchProps<{ arguments: Args }>) => {
-
     const preferences = getPreferenceValues<Prefs>();
-    let data: ValidPrefsResult<Prefs>;
+    let data: ValidPrefsResult<Prefs, PM>;
 
     try {
-      data = await validatePrefs<Prefs>(launchProps.arguments);
+      data = await validatePrefs<Prefs, PM>(launchProps.arguments);
     } catch (err) {
       if (isValidationError(err)) {
         await showError(err.message);
@@ -51,7 +50,7 @@ export const ProjectCommand = <
         await openEditor();
       } catch (e) {
         console.error(e);
-        await showError('failed to open editor... exiting');
+        await showError("failed to open editor... exiting");
         return;
       }
     }
@@ -65,7 +64,7 @@ export const ProjectCommand = <
       });
     } catch (e) {
       console.error(e);
-      await showError('failed to init project');
+      await showError("failed to init project");
       return;
     }
 
@@ -73,12 +72,7 @@ export const ProjectCommand = <
       await openEditor();
     } catch (e) {
       console.error(e);
-      await showError('project was created but failed to open editor');
+      await showError("project was created but failed to open editor");
     }
   };
 };
-
-export const NodeProjectCommand = <
-  Prefs extends Preferences.ProjectNode,
-  Args extends Arguments
->(perform: NodePerformFunc<Prefs, Args>) => ProjectCommand<Prefs, Args, NodePackageManager>(perform);
