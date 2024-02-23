@@ -3,7 +3,8 @@
   "name": "momentum",
   "title": "Momentum",
   "description": "Create a new project and open it in your favourite editor",
-  "icon": "command-icon.png",
+  "icon": "icons/main.png",
+  
   "author": "leondaz",
   "owner": "leondaz",
   "contributors": [
@@ -17,7 +18,7 @@
   "commands": [
     {
       "name": "project-empty",
-      "title": "Create an Empty Project",
+      "title": "Create Empty Project",
       "description": "Create an Empty project",
       "mode": "no-view",
       "arguments": [
@@ -78,6 +79,7 @@
     },
     {
       "name": "project-node",
+      "icon": "icons/node.png",
       "title": "Create Node Project",
       "description": "Create a Node.js project",
       "mode": "no-view",
@@ -157,6 +159,7 @@
     },
     {
       "name": "project-vite",
+      "icon": "icons/vite.png",
       "title": "Create Vite Project",
       "description": "Create a Vite project",
       "mode": "no-view",
@@ -298,6 +301,7 @@
     },
     {
       "name": "project-react",
+      "icon": "icons/react.png",
       "title": "Create React Project in JS",
       "description": "Create a project based on React & Javascript",
       "mode": "no-view",
@@ -398,6 +402,7 @@
     },
     {
       "name": "project-vue",
+      "icon": "icons/vue.png",
       "title": "Create Vue Project in JS",
       "description": "Create a project based on Vue & Javascript",
       "mode": "no-view",
