@@ -12,6 +12,7 @@
   "categories": [
     "Developer Tools"
   ],
+  "access": "public",
   "license": "MIT",
   "commands": [
     {
