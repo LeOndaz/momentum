@@ -4,7 +4,6 @@
   "title": "Momentum",
   "description": "Create a new project and open it in your favourite editor",
   "icon": "icons/main.png",
-  
   "author": "leondaz",
   "owner": "leondaz",
   "contributors": [
@@ -435,12 +434,12 @@
     }
   ],
   "dependencies": {
-    "@leondaz/eslint-config": "^1.0.12",
     "@raycast/api": "^1.67.1",
     "handlebars": "^4.7.8",
     "zx": "^7.2.3"
   },
   "devDependencies": {
+    "@leondaz/eslint-config": "^1.0.12",
     "@raycast/eslint-config": "^1.0.6",
     "@types/eslint": "^8.56.2",
     "@types/handlebars": "^4.1.0",
