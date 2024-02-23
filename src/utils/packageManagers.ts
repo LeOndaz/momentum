@@ -10,21 +10,22 @@ import {
   PackageManagerSpecs,
   ProjectInitOpts,
   ProjectInstallOpts,
-} from "../typing/packageMangers";
-import { showToast, Toast } from "@raycast/api";
-import { $ } from "./shell";
-import fs from "fs/promises";
+} from '../typing/packageMangers';
+import { showToast, Toast } from '@raycast/api';
+import { $ } from './shell';
+import fs from 'fs/promises';
+import { showError, showLoading } from './toasts';
 
 const defaultSpecs: PackageManagerSpecs = {
-  installCommand: "install",
-  initCommand: "init",
-  devFlag: "-D",
-  globalFlag: "-g",
+  installCommand: 'install',
+  initCommand: 'init',
+  devFlag: '-D',
+  globalFlag: '-g',
 };
 
 const packageManager = (name: PackageManagerName, specs: PackageManagerSpecs = defaultSpecs): PackageManager => {
   const install = async ({ packageName, dev, root, global }: ProjectInstallOpts) => {
-    await showToast(Toast.Style.Animated, "installing", `${name} is installing at ${root}`);
+    await showToast(Toast.Style.Animated, 'installing', `${name} is installing at ${root}`);
 
     const command = [name, specs.installCommand || defaultSpecs.installCommand, packageName];
 
@@ -73,7 +74,7 @@ const packageManager = (name: PackageManagerName, specs: PackageManagerSpecs = d
     }
   };
 
-  const checkPackage = async ({ pkgName, global }: CheckPageOpts): Promise<boolean> => {
+  const checkPackage = async ({ pkgName, global }: CheckPageOpts): Promise<boolean> => { // TODO idk if this is working atm
     if (global && !specs.globalFlag) {
       throw new Error(`${name} does not support global installations`);
     }
@@ -109,7 +110,8 @@ const packageManager = (name: PackageManagerName, specs: PackageManagerSpecs = d
 
 const defaultNodeSpecs: NodePackageManagerSpecs = {
   ...defaultSpecs,
-  createCommand: "create",
+  createCommand: 'create',
+  templateArg: ['--template'],
 };
 
 const nodePackageManager = (
@@ -118,16 +120,27 @@ const nodePackageManager = (
 ): NodePackageManager => {
   const manager = packageManager(name, specs);
 
-  const create = async ({ projectName, root, using, template }: NodeProjectCreateOpts) => {
+  const create = async ({ projectName, root, bundler, template }: NodeProjectCreateOpts) => {
+    console.log('creating...');
+  
+    if (!specs.templateArg || specs.templateArg.length === 0){
+      const msg = `template argument not set in ${name} specs`;
+      console.error(msg);
+      await showError(msg);
+      throw new Error(msg);
+    }
+    
+    await showLoading(bundler, `${name} is running at ${root}`);
+
     const command = [
       name,
       specs.createCommand || defaultNodeSpecs.createCommand,
-      using,
+      bundler,
       projectName,
-      "--template",
+      ...specs.templateArg,
       template,
     ];
-
+    
     try {
       await $`cd ${root} && ${command}`;
     } catch (e) {
@@ -144,8 +157,9 @@ const nodePackageManager = (
 };
 
 export const bun = (): NodePackageManager => {
-  const manager = nodePackageManager("bun", {
-    installCommand: "add",
+  const manager = nodePackageManager('bun', {
+    ...defaultNodeSpecs,
+    installCommand: 'add',
   });
 
   return {
@@ -157,7 +171,7 @@ export const bun = (): NodePackageManager => {
 
       // read package.json and return if pkg name is in it
       return fs
-        .readFile("./package.json", { encoding: "utf-8" })
+        .readFile('./package.json', { encoding: 'utf-8' })
         .then(JSON.parse)
         .then((pkg: Record<string, Record<string, string>>) => {
           function searchDeps(deps: Record<string, string>) {
@@ -172,33 +186,28 @@ export const bun = (): NodePackageManager => {
 };
 
 export const pnpm = () => {
-  return nodePackageManager("pnpm", {
-    installCommand: "add",
+  return nodePackageManager('pnpm', {
+    ...defaultNodeSpecs,
+    installCommand: 'add',
   });
 };
 export const yarn = () => {
-  return nodePackageManager("yarn", {
-    installCommand: "add",
+  return nodePackageManager('yarn', {
+    ...defaultNodeSpecs,
+    installCommand: 'add',
   });
 };
 
 export const npm = (): NodePackageManager => {
-  const baseNpm = nodePackageManager("npm");
-
-  return {
-    ...baseNpm,
-    create: async (opts) => {
-      return baseNpm.create({
-        ...opts,
-        template: `-- ${opts.template}`,
-      });
-    },
-  };
+  return nodePackageManager('npm', {
+    ...defaultNodeSpecs,
+    templateArg: ['--', '--template'],
+  });
 };
 
 export const poetry = () => {
-  return packageManager("poetry", {
-    devFlag: "--group dev",
+  return packageManager('poetry', {
+    devFlag: '--group dev',
   });
 };
 
@@ -208,17 +217,17 @@ export const poetry = () => {
 
 export function getManagerByName(name: PackageManagerName): PackageManager | NodePackageManager | null {
   switch (name) {
-    case "pnpm":
-      return pnpm();
-    case "npm":
-      return npm();
-    case "yarn":
-      return yarn();
-    case "bun":
-      return bun();
-    case "poetry":
-      return poetry();
-    default:
-      return null;
+  case 'pnpm':
+    return pnpm();
+  case 'npm':
+    return npm();
+  case 'yarn':
+    return yarn();
+  case 'bun':
+    return bun();
+  case 'poetry':
+    return poetry();
+  default:
+    return null;
   }
 }

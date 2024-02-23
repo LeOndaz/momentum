@@ -1,10 +1,11 @@
-import path from "node:path";
-import { makeDirIfNotExists } from "./makeDirIfNotExists";
-import { PackageManager, PackageManagerName } from "../typing/packageMangers";
-import { getManagerByName } from "./packageManagers";
-import { ValidationError } from "./errors";
-import { getPreferenceValues, open } from "@raycast/api";
-import { Project } from "../typing/project";
+import path from 'node:path';
+import { makeDirIfNotExists } from './makeDirIfNotExists';
+import { PackageManager, PackageManagerName } from '../typing/packageMangers';
+import { getManagerByName } from './packageManagers';
+import { ValidationError } from './errors';
+import { getPreferenceValues, open, showHUD } from '@raycast/api';
+import { Project } from '../typing/project';
+import { showError } from './toasts';
 
 export interface ValidPrefsResult<T, PM> {
   manager: PM;
@@ -47,6 +48,12 @@ export const validatePrefs = async <T extends Project, PM extends PackageManager
   const manager: PM = await validateManager(prefs.pkgManager);
 
   const editor = async () => {
+    if (!prefs.editor) {
+      await showError('no editor selected in preferences');
+      return;
+    }
+    
+    await showHUD(`opening ${prefs.editor.name}`);
     await open(projectRoot, prefs.editor);
   };
 

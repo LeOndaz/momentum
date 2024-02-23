@@ -5,6 +5,11 @@
   "description": "Create a new project and open it in your favourite editor",
   "icon": "command-icon.png",
   "author": "leondaz",
+  "owner": "leondaz",
+  "contributors": [
+    "leondaz"
+  ],
+  "access": "public",
   "categories": [
     "Developer Tools"
   ],
@@ -386,10 +391,6 @@
             {
               "title": "Vite",
               "value": "vite"
-            },
-            {
-              "title": "Webpack",
-              "value": "Webpack"
             }
           ]
         }
@@ -424,20 +425,12 @@
       "label": "Show editor first",
       "description": "Opens the editor set for the command before the command finishes running",
       "required": false,
-      "default": true,
+      "default": false,
       "type": "checkbox"
-    },
-    {
-      "name": "overwriteIfExists",
-      "title": "Dangerously overwrite projects",
-      "label": "Dangerously overwrite",
-      "description": "DANGER: Overwrites the project in case it exists",
-      "type": "checkbox",
-      "required": false,
-      "default": false
     }
   ],
   "dependencies": {
+    "@leondaz/eslint-config": "^1.0.12",
     "@raycast/api": "^1.67.1",
     "handlebars": "^4.7.8",
     "zx": "^7.2.3"

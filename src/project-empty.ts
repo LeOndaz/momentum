@@ -1,9 +1,9 @@
-import { getPreferenceValues, type LaunchProps, open } from "@raycast/api";
-import { Arguments } from "./typing/misc";
-import { makeDirIfNotExists } from "./utils/makeDirIfNotExists";
-import path from "path";
-import { showError } from "./utils/toasts";
-import { isValidationError } from "./utils/errors";
+import { getPreferenceValues, type LaunchProps, open } from '@raycast/api';
+import { Arguments } from './typing/misc';
+import { makeDirIfNotExists } from './utils/makeDirIfNotExists';
+import path from 'path';
+import { showError } from './utils/toasts';
+import { isValidationError } from './utils/errors';
 
 type ProjectEmptyProps = LaunchProps<{ arguments: Arguments.ProjectEmpty }>;
 
@@ -25,12 +25,13 @@ export default async function ProjectEmpty(props: ProjectEmptyProps) {
     }
 
     await showError(`failed to create ${projectRoot}`);
+    return;
   }
 
   try {
     await open(projectRoot, editor);
   } catch (e) {
     console.error(e);
-    await showError("project was created but failed to open editor");
+    await showError('project was created but failed to open editor');
   }
 }
