@@ -8,7 +8,9 @@ import { isDev } from "./isDev";
  * There's a better way to write this, but not today
  * */
 
-const commandsThatRunOnShellStartup = ["~/.profile", "~/.bashrc", "~/.zprofile", "~/.zshrc"].map((s) => `[[ -f ${s} ]] && source ${s}`);
+const commandsThatRunOnShellStartup = ["~/.profile", "~/.bashrc", "~/.zprofile", "~/.zshrc"].map(
+  (s) => `[[ -f ${s} ]] && source ${s}`,
+);
 
 $.shell = "/bin/zsh";
 $.prefix = commandsThatRunOnShellStartup.join(";") + ";";
