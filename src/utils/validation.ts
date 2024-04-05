@@ -15,10 +15,10 @@ export interface ValidPrefsResult<T, PM> {
 
 export const validateProjectName = async (name: string) => {
   const validDirectoryName = /^[A-Za-z_][A-Za-z0-9_-]*$/;
-    
+
   if (!validDirectoryName.test(name)) {
     throw new ValidationError(
-      "invalid directory name, name should start with a letter, and can only contain A-Z, a-z, 0-9, underscores & hyphens."
+      "invalid directory name, name should start with a letter, and can only contain A-Z, a-z, 0-9, underscores & hyphens.",
     );
   }
 };
@@ -49,7 +49,7 @@ export const validateManager = async <PM extends PackageManager>(pkgManager: Pac
 };
 
 export const validatePrefs = async <T extends Project, PM extends PackageManager>(
-  args: Arguments.ProjectEmpty
+  args: Arguments.ProjectEmpty,
 ): Promise<ValidPrefsResult<T, PM>> => {
   const prefs = getPreferenceValues<T>();
 
@@ -60,7 +60,7 @@ export const validatePrefs = async <T extends Project, PM extends PackageManager
 
   const editor = async () => {
     if (!prefs.editor) {
-      throw new ValidationError("no editor selected in preferences")
+      throw new ValidationError("no editor selected in preferences");
     }
 
     await showHUD(`opening ${prefs.editor.name}`);
@@ -71,6 +71,6 @@ export const validatePrefs = async <T extends Project, PM extends PackageManager
     manager,
     projectRoot,
     openEditor: editor,
-    data: prefs
+    data: prefs,
   };
 };
